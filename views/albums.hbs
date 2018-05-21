@@ -1,0 +1,15 @@
+<h1>Add a new album!</h1>
+
+<form action="/albums" method="POST">
+    <div>
+        <label for="name">Title: </label>
+        <input type="text" name="title">
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
+{{#each albums}}
+<h1>{{Title}}</h1>
+{{/each}}
