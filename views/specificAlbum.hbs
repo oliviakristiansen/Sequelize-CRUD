@@ -1,3 +1,21 @@
 <h1>{{Title}}</h1>
 <h2>{{YearReleased}}</h2>
 <h2>{{Name}}</h2>
+
+<form action="/albums/{{AlbumId}}" method="POST">
+    <div>
+        <label for="name">Title: </label>
+        <input type="text" name="title" value={{Title}}>
+    </div>
+    <div>
+        <label for="name">Artist: </label>
+        <input type="text" name="artist" value={{Name}}>
+    </div>
+    <div>
+        <label for="name">Year Released: </label>
+        <input type="text" name="yearReleased" value={{YearReleased}}>
+    </div>
+    <div>
+        <button type="submit">Update Album</button>
+    </div>
+</form>

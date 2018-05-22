@@ -44,8 +44,36 @@ router.post('/albums', (req, res) => {
 
 });
 
+// Below, I am trying to do a sequelize join using include. Can't quite get it to work. 
+// router.get('/albums/:id', (req, res) => {
+//   let albumId = parseInt(req.params.id);
+//   models.albums
+//     .find({
+//       where: {
+//         AlbumId: albumId,
+//       },
+//       include: [{
+//         model: models.artists,
+//         as: 'artist',
+//         where: {
+//           ArtistId: models.albums.ArtistId
+//         }
+//       }]
+//     }).then(album => {
+//       res.render('specificAlbum', {
+//         Title: album.Title,
+//         YearReleased: album.YearReleased,
+//         Name: artist.Name
+//       })
+
+//     })
+// });
+
+// Below, this is a query within a query and want to do a sequelize join instead (see above). But for now this works. 
 router.get('/albums/:id', (req, res) => {
   let albumId = parseInt(req.params.id);
+
+  // Find the specific album based on the `:id`
   models.albums
     .find({
       where: {
@@ -53,17 +81,38 @@ router.get('/albums/:id', (req, res) => {
       }
     })
     .then(album => {
-      models.artists.find({
-        where: {
-          ArtistId: album.ArtistId
-        }
-      }).then(artist => {
-        res.render('specificAlbum', {
-          Title: album.Title,
-          YearReleased: album.YearReleased,
-          Name: artist.Name
+      // Find the artist that has the same ArtistId as the album that was found
+      models.artists
+        .find({
+          where: {
+            ArtistId: album.ArtistId
+          }
         })
-      })
+        .then(artist => {
+          //render the `specificAlbum` view and specify each field
+          res.render('specificAlbum', {
+            Title: album.Title,
+            YearReleased: album.YearReleased,
+            Name: artist.Name
+          });
+        });
     });
 });
+
+
+// trying to figure out how to update an album based on an html form. Not working yet. 
+router.post('/albums/:id', (req, res) => {
+  let albumId = parseInt(req.params.id);
+  models.albums.update({
+    Title: req.body.title,
+    Name: req.body.artist,
+    YearReleased: req.body.yearReleased
+  }, {
+    where: {
+      AlbumId: albumId
+    }
+  }).then(result => {
+    res.send('done')
+  })
+})
 module.exports = router;

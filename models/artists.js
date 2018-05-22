@@ -1,5 +1,4 @@
 'use strict';
-var Albums = require('./albums.js')
 module.exports = (sequelize, DataTypes) => {
     const artists = sequelize.define(
         'artists', {
@@ -13,7 +12,10 @@ module.exports = (sequelize, DataTypes) => {
             timestamps: false,
             classMethods: {
                 associate: function (models) {
-                    artists.hasMany(models.albums)
+                    artists.hasMany(models.albums, {
+                        foreignKey: 'ArtistId',
+                        as: 'artist'
+                    })
                 },
             },
         }
