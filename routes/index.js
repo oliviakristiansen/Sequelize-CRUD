@@ -44,4 +44,26 @@ router.post('/albums', (req, res) => {
 
 });
 
+router.get('/albums/:id', (req, res) => {
+  let albumId = parseInt(req.params.id);
+  models.albums
+    .find({
+      where: {
+        AlbumId: albumId
+      }
+    })
+    .then(album => {
+      models.artists.find({
+        where: {
+          ArtistId: album.ArtistId
+        }
+      }).then(artist => {
+        res.render('specificAlbum', {
+          Title: album.Title,
+          YearReleased: album.YearReleased,
+          Name: artist.Name
+        })
+      })
+    });
+});
 module.exports = router;
