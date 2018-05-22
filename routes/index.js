@@ -19,19 +19,29 @@ router.get('/albums', function (req, res, next) {
 });
 
 router.post('/albums', (req, res) => {
-  models.albums
-    .findOrCreate({
-      where: {
-        Title: req.body.title,
-      }
-    })
-    .spread(function (result, created) {
-      if (created) {
-        res.redirect('/albums');
-      } else {
-        res.send('This album already exists!');
-      }
-    });
+  models.artists.findOrCreate({
+    where: {
+      Name: req.body.artist
+    }
+  }).spread(function (result, created) {
+    models.albums
+      .findOrCreate({
+        where: {
+          Title: req.body.title,
+          ArtistId: result.ArtistId,
+          YearReleased: req.body.yearReleased
+        }
+      })
+      .spread(function (result, created) {
+        if (created) {
+          res.redirect('/albums');
+        } else {
+          res.send('This album already exists!');
+        }
+      });
+
+  })
+
 });
 
 module.exports = router;

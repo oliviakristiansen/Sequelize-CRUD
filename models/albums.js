@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
             timestamps: false,
             classMethods: {
                 associate: function (models) {
-                    albums.belongsTo(models.artists)
+                    albums.hasOne(models.artists)
                 },
             },
         },
