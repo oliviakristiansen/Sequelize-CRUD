@@ -12,17 +12,14 @@ module.exports = (sequelize, DataTypes) => {
             YearReleased: DataTypes.INTEGER
         }, {
             timestamps: false,
-            classMethods: {
-                associate: function (models) {
-                    albums.hasOne(models.artists, {
-                        foreignKey: 'ArtistId',
-                        as: 'artist'
-                    })
-                },
-            },
         },
 
-    )
+    );
+    albums.associate = function (models) {
+        albums.belongsTo(models.artists, {
+            foreignKey: 'ArtistId'
+        })
+    }
 
     return albums;
 };

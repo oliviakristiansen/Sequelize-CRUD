@@ -2,18 +2,33 @@
 <h2>{{YearReleased}}</h2>
 <h2>{{Name}}</h2>
 
-<form action="/albums/{{AlbumId}}" method="POST">
+<script>
+    function onSubmit() {
+        // pull in the values of the form inputs
+        const title = document.getElementById('title').value;
+        const yearReleased = document.getElementById('yearReleased').value;
+
+        //since the <form> element doesn't support 'PUT', use jquery ajax to define the url and the method PUT
+        $.ajax({
+            url: '/albums/{{ AlbumId }}',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ title: title, yearReleased: yearReleased }),
+            method: 'PUT', complete: () => window.location.reload()
+        })
+    }
+</script>
+
+<!-- Using the form to call the onSubmit function. 'return false' will prevent the form from defaulting to a GET method
+since it should use the ajax PUT method -->
+
+<form onsubmit="onSubmit(); return false">
     <div>
         <label for="name">Title: </label>
-        <input type="text" name="title" value={{Title}}>
-    </div>
-    <div>
-        <label for="name">Artist: </label>
-        <input type="text" name="artist" value={{Name}}>
+        <input type="text" name="title" id="title" value="{{Title}}">
     </div>
     <div>
         <label for="name">Year Released: </label>
-        <input type="text" name="yearReleased" value={{YearReleased}}>
+        <input type="text" name="yearReleased" id="yearReleased" value="{{YearReleased}}">
     </div>
     <div>
         <button type="submit">Update Album</button>

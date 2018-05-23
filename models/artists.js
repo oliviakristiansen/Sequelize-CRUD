@@ -9,17 +9,14 @@ module.exports = (sequelize, DataTypes) => {
             },
             Name: DataTypes.STRING
         }, {
-            timestamps: false,
-            classMethods: {
-                associate: function (models) {
-                    artists.hasMany(models.albums, {
-                        foreignKey: 'ArtistId',
-                        as: 'artist'
-                    })
-                },
-            },
+            timestamps: false
         }
     );
+    artists.associate = function (models) {
+        artists.hasMany(models.albums, {
+            foreignKey: 'ArtistId'
+        })
+    }
 
     return artists;
 };
