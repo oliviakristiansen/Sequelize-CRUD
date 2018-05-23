@@ -16,6 +16,13 @@
             method: 'PUT', complete: () => window.location.reload()
         })
     }
+    function onDelete() {
+        // again used ajax to handle the delete
+        $.ajax({
+            url: '/albums/{{AlbumId}}/delete',
+            method: 'DELETE', complete: () => window.location = "/albums"
+        })
+    }
 </script>
 
 <!-- Using the form to call the onSubmit function. 'return false' will prevent the form from defaulting to a GET method
@@ -34,3 +41,7 @@ since it should use the ajax PUT method -->
         <button type="submit">Update Album</button>
     </div>
 </form>
+
+<div>
+    <button onclick="onDelete()">Delete Album</button>
+</div>

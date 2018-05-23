@@ -40,7 +40,7 @@ router.post('/albums', (req, res) => {
         }
       });
 
-  })
+  });
 
 });
 
@@ -53,15 +53,14 @@ router.get('/albums/:id', (req, res) => {
       },
       include: [models.artists]
     }).then(album => {
-      console.log(album.artist.Name);
       res.render('specificAlbum', {
         Title: album.Title,
         YearReleased: album.YearReleased,
         Name: album.artist.Name,
         AlbumId: album.AlbumId
-      })
+      });
 
-    })
+    });
 });
 
 
@@ -77,6 +76,20 @@ router.put('/albums/:id', (req, res) => {
     }
   }).then(result => {
     res.send()
+  });
+});
+
+
+router.delete('/albums/:id/delete', (req, res) => {
+  let albumId = parseInt(req.params.id);
+
+  models.albums.find({
+    where: {
+      AlbumId: albumId
+    }
+  }).then(album => {
+    album.destroy();
+    res.send();
   })
 })
 module.exports = router;
