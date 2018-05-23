@@ -44,7 +44,6 @@ router.post('/albums', (req, res) => {
 
 });
 
-// Below, I am trying to do a sequelize join using include. Can't quite get it to work. 
 router.get('/albums/:id', (req, res) => {
   let albumId = parseInt(req.params.id);
   models.albums
@@ -66,7 +65,6 @@ router.get('/albums/:id', (req, res) => {
 });
 
 
-// trying to figure out how to update an album based on an html form. Not working yet. 
 router.put('/albums/:id', (req, res) => {
   console.log(req.body);
   let albumId = parseInt(req.params.id);
