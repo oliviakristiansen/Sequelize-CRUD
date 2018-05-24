@@ -65,7 +65,6 @@ router.get('/albums/:id', (req, res) => {
 
 
 router.put('/albums/:id', (req, res) => {
-  console.log(req.body);
   let albumId = parseInt(req.params.id);
   models.albums.update({
     Title: req.body.title,
