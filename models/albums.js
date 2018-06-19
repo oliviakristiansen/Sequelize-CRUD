@@ -18,7 +18,11 @@ module.exports = (sequelize, DataTypes) => {
     albums.associate = function (models) {
         albums.belongsTo(models.artists, {
             foreignKey: 'ArtistId'
-        })
+        });
+        albums.hasMany(models.tracks, {
+            foreignKey: 'AlbumId',
+            onDelete: 'cascade'
+        });
     }
 
     return albums;

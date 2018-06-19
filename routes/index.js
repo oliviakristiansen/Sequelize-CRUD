@@ -82,13 +82,35 @@ router.put('/albums/:id', (req, res) => {
 router.delete('/albums/:id/delete', (req, res) => {
   let albumId = parseInt(req.params.id);
 
-  models.albums.find({
-    where: {
-      AlbumId: albumId
-    }
-  }).then(album => {
-    album.destroy();
-    res.send();
-  })
-})
+  models.albums
+    .destroy({
+      where: {
+        AlbumId: albumId
+      },
+      include: [{
+        model: models.tracks,
+        where: {
+          AlbumId: albumId
+        }
+      }]
+    })
+    .then(albumDestroyed => {
+      res.redirect('/albums');
+    });
+
+  // Tried a work around but still got constraint error:
+  // models.tracks.destroy({
+  //   where: {
+  //     AlbumId: albumId
+  //   }
+  // }).then(deletedTrack => {
+  //   models.albums.destroy({
+  //     where: {
+  //       AlbumId: albumId
+  //     }
+  //   })
+  // }).then(albumDestroyed => {
+  //   res.redirect('/albums');
+  // });
+});
 module.exports = router;
