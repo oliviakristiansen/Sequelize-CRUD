@@ -9,9 +9,10 @@ module.exports = (sequelize, DataTypes) => {
             },
             Title: DataTypes.STRING,
             ArtistId: DataTypes.INTEGER,
-            YearReleased: DataTypes.INTEGER
+            YearReleased: DataTypes.INTEGER,
+            Deleted: DataTypes.BOOLEAN
         }, {
-            timestamps: false,
+            timestamps: false
         },
 
     );
@@ -20,8 +21,7 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'ArtistId'
         });
         albums.hasMany(models.tracks, {
-            foreignKey: 'AlbumId',
-            onDelete: 'cascade'
+            foreignKey: 'AlbumId'
         });
     }
 

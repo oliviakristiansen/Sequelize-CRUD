@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
             AlbumId: DataTypes.INTEGER,
             MediaTypeId: {
                 allowNull: false,
-                type: DataTypes.STRING
+                type: DataTypes.INTEGER
             },
             GenreId: DataTypes.INTEGER,
             Composer: DataTypes.STRING,
@@ -28,15 +28,16 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 type: DataTypes.INTEGER
             },
+            Deleted: DataTypes.BOOLEAN
         }, {
-            timestamps: false,
+            timestamps: false
         },
 
     );
     tracks.associate = function (models) {
-        // tracks.belongsTo(models.albums, {
-        //     foreignKey: 'AlbumId'
-        // })
+        tracks.belongsTo(models.albums, {
+            foreignKey: 'AlbumId'
+        })
     }
 
     return tracks;

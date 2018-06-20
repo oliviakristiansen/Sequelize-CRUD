@@ -3,6 +3,7 @@ var router = express.Router();
 const sqlite = require('sqlite3').verbose();
 var models = require('../models');
 
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', {
@@ -11,7 +12,11 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/albums', function (req, res, next) {
-  models.albums.findAll({}).then(data => {
+  models.albums.findAll({
+    where: {
+      Deleted: null
+    }
+  }).then(data => {
     res.render('albums', {
       albums: data
     });
@@ -81,36 +86,27 @@ router.put('/albums/:id', (req, res) => {
 
 router.delete('/albums/:id/delete', (req, res) => {
   let albumId = parseInt(req.params.id);
-
-  models.albums
-    .destroy({
+  models.tracks
+    .update({
+      Deleted: "true"
+    }, {
       where: {
         AlbumId: albumId
-      },
-      include: [{
-        model: models.tracks,
+      }
+    })
+    .then(track => {
+      models.albums.update({
+        Deleted: "true"
+      }, {
         where: {
           AlbumId: albumId
         }
-      }]
-    })
-    .then(albumDestroyed => {
-      res.redirect('/albums');
-    });
+      }).then(album => {
+        res.redirect('/albums');
+      })
 
-  // Tried a work around but still got constraint error:
-  // models.tracks.destroy({
-  //   where: {
-  //     AlbumId: albumId
-  //   }
-  // }).then(deletedTrack => {
-  //   models.albums.destroy({
-  //     where: {
-  //       AlbumId: albumId
-  //     }
-  //   })
-  // }).then(albumDestroyed => {
-  //   res.redirect('/albums');
-  // });
+
+
+    })
 });
 module.exports = router;
